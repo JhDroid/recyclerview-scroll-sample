@@ -2,9 +2,7 @@ package com.jhdroid.sample.recyclerviewscroll
 
 import android.graphics.Rect
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.view.ViewTreeObserver
 import androidx.appcompat.app.AppCompatActivity
 import com.jhdroid.sample.recyclerviewscroll.databinding.ActivityMainBinding
 
@@ -24,6 +22,8 @@ class MainActivity : AppCompatActivity() {
 
         setupView()
         setupAdapter()
+        // 화면 진입 시 데이터 설정 후 스크롤 테스트
+//        setupData()
     }
 
     private fun setupView() {
@@ -58,13 +58,18 @@ class MainActivity : AppCompatActivity() {
              * 키보드가 열린 상태에서 체크하면 키보드가 사라질 때 목록이 하단에 붙을 수 있음
              * */
             viewTreeObserver.addOnScrollChangedListener {
-                if (isScrollable() && !isOpen) {
-                    Log.d("jhkimTest", "isOpen :: $isOpen")
+                if (isScrollable() && !isOpen) { // 스크롤이 가능하면서 키보드가 닫힌 상태일 떄만
                     setStackFromEnd()
                     removeOnLayoutChangeListener(onLayoutChangeListener)
                 }
             }
         }
+    }
+
+    private fun setupData() { // 더미 데이터 설정
+        for (i in 1..20) dataList.add(i.toString())
+
+        sampleDataAdapter?.submitList(dataList.toList())
     }
 
     fun addData(data: String?) {
